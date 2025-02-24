@@ -1,7 +1,6 @@
 import { productos } from '@/app/detalles-del-producto'; //importar el array de productos. el @ es para que busque en la carpeta app
 import NotFoundPage from '@/app/not-found';
-import HeaderPage from '@/app/header/page';
-import FooterPage from '@/app/footer/page';
+import ProductsList from '@/app/productsList';
 export default function ProductDetail({ params }:  {params: {id: string}}) { //observar nombre de la carpeta, que va a ser el path de la pagina
     const producto = productos.find(pid => pid.id === params.id); //buscar el producto con el id que se pasa por parametro
     //si el producto no se encuentra (se devuelve id que no hay):
@@ -11,7 +10,6 @@ export default function ProductDetail({ params }:  {params: {id: string}}) { //o
     return (
         <>
         <div className="container mx-auto">
-            <HeaderPage/>
             <div className="container mx-auto p-8 flex flex-col md:flex-row shadow-mid overflow-hidden content-evenly items-stretch">
                 <div className="md:w-1/3 mb-4 md:mb-0 md:mr-8 flex flex-col rounded-xl">
                     <img src={'/' + producto.imageUrl} alt="imagen del producto" 
@@ -24,9 +22,17 @@ export default function ProductDetail({ params }:  {params: {id: string}}) { //o
                     <article className="container  mx-auto p-2 bg-gray-100 shadow-mid text-balance text-elipsis">
                         <p className="font-mono object-contain">{producto.descripcion}</p>
                     </article>
+                    <div className="flex flex-row justify-between items-center pt-3">
+                    <button data-ripple-light="true" className="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2" type="button">
+                        Agregar al carrito
+                    </button>
+                    </div>
                 </div>
             </div>
-            <FooterPage/>
+            <div className="container mx-auto p-8 flex flex-col md:flex-row shadow-mid overflow-hidden content-evenly items-stretch text-center">
+                <h1 className="text-4xl font-mono font-bold pb-3 pt-3">Articulos relacionados</h1>
+                <ProductsList productos={productos.filter(p => p.type === producto.type)}/>
+            </div>
         </div>
         </>
     )
